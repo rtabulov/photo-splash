@@ -1,19 +1,7 @@
 # photo-splash
 
-## Project setup
-```
-npm install
-```
+## A demo app for searching, browsing and downloading images
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Available at https://rtabulov.github.io/photo-splash/
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### Built with Vue.js with vue-router and Unsplash API
