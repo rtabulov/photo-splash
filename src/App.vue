@@ -40,8 +40,7 @@ export default {
   },
 
   created: function() {
-    axios.defaults.headers.common['Authorization'] =
-      'Client-ID 11a74ce7eb951b44a650e7d7f8357c68d0d2c832d514395230893af7bd1eae22'
+    axios.defaults.headers.common.Authorization = `Client-ID ${process.env.VUE_APP_UNSPLASH_TOKEN}`
   },
 }
 </script>
