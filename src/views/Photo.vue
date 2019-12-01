@@ -1,6 +1,7 @@
 <template>
+  <!-- loading state -->
   <div v-if="loading" class="container py-24 text-center">
-    <h1>Loading <Preloader size="medium" class="ml-8" /></h1>
+    <Preloader size="big" />
   </div>
 
   <div v-else-if="photo && Object.keys(photo).length > 0">
@@ -53,20 +54,22 @@
 
           <p v-if="photo.location.title">{{ photo.location.title }}</p>
 
-          <h2 class="text-xl inline-block mr-4">Download:</h2>
-          <a
-            :href="photo.links.download"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn green darken-3 waves-effect waves-light my-6"
-          >
-            <!-- {{ photo.width }} x {{ photo.height }} px -->
-            Full size
-            <i class="material-icons right">cloud_download</i>
-          </a>
+          <h2 class="text-xl flex items-center">
+            Download:
+            <a
+              :href="photo.links.download"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn green darken-3 waves-effect waves-light ml-4"
+            >
+              <!-- {{ photo.width }} x {{ photo.height }} px -->
+              Full size
+              <i class="material-icons right">cloud_download</i>
+            </a>
+          </h2>
         </div>
-        <div class="col m6 offset-m1">
-          <div class="mb-10 mt-6">
+        <div class="col m6 offset-m1 mt-6">
+          <div class="mb-10">
             <h2 class="text-xl inline-block mr-4">Info:</h2>
 
             <span class="btn waves-effect waves-light blue darken-1 mr-2 mb-2"
@@ -93,7 +96,7 @@
             </span>
           </div>
 
-          <div class="tags">
+          <div class="mb-10">
             <h2 class="text-xl inline-block mr-4">Tags:</h2>
             <span
               v-for="tag in photo.tags"

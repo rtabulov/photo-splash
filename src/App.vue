@@ -15,15 +15,15 @@
 
 <script>
 import axios from 'axios'
+import store from '@/store'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 import '@/assets/css/icons.css'
+import 'materialize-css/dist/js/materialize.min.js'
 import 'materialize-css/dist/css/materialize.min.css'
 import 'tailwindcss/dist/utilities.css'
 import '@/assets/css/custom.scss'
-
-import 'materialize-css/dist/js/materialize.min.js'
 
 export default {
   name: 'App',
@@ -41,6 +41,7 @@ export default {
 
   created: function() {
     axios.defaults.headers.common.Authorization = `Client-ID ${process.env.VUE_APP_UNSPLASH_TOKEN}`
+    store.dispatch('fetchPhotos', { replace: true, heading: 'Latest photos' })
   },
 }
 </script>

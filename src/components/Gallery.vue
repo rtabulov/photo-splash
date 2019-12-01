@@ -1,9 +1,10 @@
 <template>
   <div class="container">
+    <h1>{{ heading }}</h1>
     <div id="gallery" class="flex items-start">
       <div
         v-for="(splitPhoto, index) in splitPhotos"
-        :key="ids[index]"
+        :key="index"
         :class="{ col1: index === 0, col2: index === 1, col3: index === 2 }"
       >
         <GalleryItem
@@ -14,11 +15,11 @@
         />
       </div>
     </div>
-    <div v-if="more" class="text-center my-10">
+    <div v-if="!isLastPage" class="text-center my-10">
       <Preloader v-if="updating" />
       <div
         v-else
-        @click="$emit('loadMore')"
+        @click="onLoadMore"
         class="btn-large waves-effect waves-light grey darken-4"
       >
         Load more <i class="material-icons right">arrow_forward</i>
@@ -28,21 +29,20 @@
 </template>
 
 <script>
+import store from '@/store'
 import GalleryItem from './GalleryItem'
 import Preloader from './Preloader'
 
 export default {
   name: 'Gallery',
-
-  props: {
-    photos: Array,
-    more: Boolean,
-    updating: Boolean,
-  },
-
   components: {
     GalleryItem,
     Preloader,
+  },
+
+  props: {
+    isLastPage: Boolean,
+    updating: Boolean,
   },
 
   data() {
@@ -50,11 +50,24 @@ export default {
       splitPhotos: [[]],
       heights: [0],
       cols: null,
-      ids: ['pie', '1337', '42', 'just to be sure'],
     }
   },
 
+  computed: {
+    heading() {
+      return store.state.heading
+    },
+
+    photos() {
+      return store.state.photos
+    },
+  },
+
   methods: {
+    onLoadMore() {
+      store.dispatch('fetchPhotos', { replace: false })
+    },
+
     // count new number of columns
     resizeHandler() {
       if (window.innerWidth < 600) {
@@ -106,6 +119,16 @@ export default {
   watch: {
     // on photos change resolve with new items
     photos: function(newPhotos, oldPhotos) {
+      if (newPhotos.length === 0) {
+        this.resetCols([])
+        return
+      }
+
+      if (oldPhotos.length > 0 && newPhotos[0].id !== oldPhotos[0].id) {
+        this.resetCols(newPhotos)
+        return
+      }
+
       this.resolveCols(
         newPhotos
           .map((p) => p.id)
