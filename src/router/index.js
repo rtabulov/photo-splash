@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Photo from '../views/Photo.vue'
-import Page404 from '../views/404.vue'
+import Home from '@/views/Home.vue'
+import Photo from '@/views/Photo.vue'
+import Page404 from '@/views/404.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/photos/:id', name: 'Photo', component: Photo },
-  { path: '*', name: '404', component: Page404 },
+  { path: '/', name: 'HomeRoute', component: () => import('@/views/Home.vue') },
+  {
+    path: '/photos/:id',
+    name: 'PhotoRoute',
+    component: () => import('@/views/Photo.vue'),
+  },
+  { path: '*', component: () => import('@/views/404.vue') },
 ]
 
 const router = new VueRouter({

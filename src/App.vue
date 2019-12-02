@@ -1,8 +1,27 @@
 <template>
   <div id="app">
     <Navbar />
-    <router-view />
+
+    <!-- loading status -->
+    <div v-if="status === 'loading'" class="container py-32 text-center">
+      <Preloader size="big" />
+    </div>
+    <!-- nothing found status -->
+    <div v-else-if="status === 'notfound'" class="container py-24">
+      <h1>Nothing Found 😥</h1>
+    </div>
+
+    <!-- error status -->
+    <div v-else-if="status === 'error'" class="container py-24">
+      <h1>Something went wrong 🤔</h1>
+    </div>
+
+    <keep-alive v-else>
+      <router-view :key="$route.fullPath" />
+    </keep-alive>
+
     <Footer />
+
     <button
       @click="scrollToTop"
       type="button"
@@ -15,14 +34,15 @@
 
 <script>
 import axios from 'axios'
-import store from '@/store'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import Preloader from '@/components/Preloader'
+// const Preloader = () => import('@/components/Preloader')
 
 import '@/assets/css/icons.css'
-import 'materialize-css/dist/js/materialize.min.js'
-import 'materialize-css/dist/css/materialize.min.css'
 import 'tailwindcss/dist/utilities.css'
+import '@/assets/css/materialize.min.css'
+import '@/assets/js/materialize.min.js'
 import '@/assets/css/custom.scss'
 
 export default {
@@ -31,6 +51,13 @@ export default {
   components: {
     Navbar,
     Footer,
+    Preloader,
+  },
+
+  computed: {
+    status() {
+      return this.$store.state.status
+    },
   },
 
   methods: {
@@ -41,7 +68,10 @@ export default {
 
   created: function() {
     axios.defaults.headers.common.Authorization = `Client-ID ${process.env.VUE_APP_UNSPLASH_TOKEN}`
-    store.dispatch('fetchPhotos', { replace: true, heading: 'Latest photos' })
+    this.$store.dispatch('fetchPhotos', {
+      replace: true,
+      heading: 'Latest photos',
+    })
   },
 }
 </script>

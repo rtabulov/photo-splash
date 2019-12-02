@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-if="!isLastPage" class="text-center my-10">
-      <Preloader v-if="updating" />
+      <Preloader v-if="status === 'updating'" />
       <div
         v-else
         @click="onLoadMore"
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import store from '@/store'
 import GalleryItem from './GalleryItem'
 import Preloader from './Preloader'
@@ -40,11 +41,6 @@ export default {
     Preloader,
   },
 
-  props: {
-    isLastPage: Boolean,
-    updating: Boolean,
-  },
-
   data() {
     return {
       splitPhotos: [[]],
@@ -54,13 +50,7 @@ export default {
   },
 
   computed: {
-    heading() {
-      return store.state.heading
-    },
-
-    photos() {
-      return store.state.photos
-    },
+    ...mapState(['heading', 'photos', 'isLastPage', 'status']),
   },
 
   methods: {

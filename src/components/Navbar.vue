@@ -46,11 +46,9 @@
 <script>
 export default {
   name: 'Navbar',
-  created() {
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.sidenav')
-      var instances = window.M.Sidenav.init(elems, {})
-    })
+  mounted() {
+    var elems = document.querySelectorAll('.sidenav')
+    var instances = window.M.Sidenav.init(elems, {})
   },
 }
 </script>

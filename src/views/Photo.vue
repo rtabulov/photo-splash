@@ -1,11 +1,5 @@
 <template>
-  <!-- loading state -->
-  <div v-if="loading" class="container py-24 text-center">
-    <Preloader size="big" />
-  </div>
-
-  <div v-else-if="photo && Object.keys(photo).length > 0">
-    <!-- <div class="container pt-8"> -->
+  <div v-if="Object.keys(photo).length > 0">
     <div class="flex justify-center">
       <img
         :srcset="
@@ -21,7 +15,6 @@
         alt=""
       />
     </div>
-    <!-- </div> -->
     <div class="container">
       <div class="row">
         <div class="col m5 text-lg">
@@ -40,13 +33,16 @@
                 :alt="fullName + ' profile image'"
               />
               <span>
-                {{ fullName }} <br />
-                <small class="text-base inline-flex items-center"
-                  >visit on unsplash
-                  <i class="material-icons ml-1" style="font-size: 17px;"
-                    >arrow_forward</i
-                  ></small
-                >
+                <span>
+                  {{ fullName }}
+                </span>
+                <br />
+                <small class="text-base flex items-center leading-none">
+                  visit on unsplash
+                  <i class="material-icons ml-1" style="font-size: 18px;"
+                    >keyboard_arrow_right
+                  </i>
+                </small>
               </span>
             </a>
           </h1>
@@ -78,7 +74,9 @@
             <span class="btn waves-effect waves-light blue darken-1 mr-2 mb-2"
               >{{ photo.color }}
             </span>
-            <span class="btn waves-effect waves-light blue darken-1 mr-2 mb-2"
+            <span
+              v-if="photo.created_at"
+              class="btn waves-effect waves-light blue darken-1 mr-2 mb-2"
               >{{ formattedDate }}
               <i class="material-icons right">access_time</i>
             </span>
@@ -109,32 +107,13 @@
       </div>
     </div>
   </div>
-
-  <div v-else class="container py-24">
-    <h1>
-      This photo does not exist 😢
-    </h1>
-  </div>
 </template>
 
 <script>
-import axios from 'axios'
-import moment from 'moment'
-import Preloader from '@/components/Preloader'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
-
-  components: {
-    Preloader,
-  },
-
-  data() {
-    return {
-      photo: {},
-      loading: true,
-    }
-  },
 
   computed: {
     fullName: function() {
@@ -146,19 +125,34 @@ export default {
     },
 
     formattedDate: function() {
-      return moment(this.photo.date).format('MMM DD, YYYY')
+      const d = new Date(this.photo.created_at)
+      const monthNames = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ]
+
+      return (
+        monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()
+      )
     },
+
+    ...mapState(['status', 'photo']),
   },
 
   created() {
-    axios
-      .get('https://api.unsplash.com/photos/' + this.$route.params.id)
-      .then((res) => {
-        this.photo = res.data
-      })
-      .finally(() => {
-        this.loading = false
-      })
+    if (this.photo.id !== this.$route.params.id) {
+      this.$store.dispatch('getPhoto', { id: this.$route.params.id })
+    }
   },
 }
 </script>
