@@ -4,4 +4,4 @@
 
 ### Available at https://rtabulov.github.io/photo-splash/
 
-#### Built with Vue.js with vue-router and Unsplash API
+#### Built with vue.js (with vue-router & vuex) and Unsplash API
