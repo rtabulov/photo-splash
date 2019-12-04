@@ -1,6 +1,14 @@
 <template>
   <div v-if="Object.keys(photo).length > 0">
-    <div class="flex justify-center">
+    <div class="flex justify-center relative">
+      <button
+        class="btn black z-depth-4"
+        @click="$router.go(-1)"
+        type="button"
+        :style="{ position: 'absolute', right: '5%', bottom: '20px' }"
+      >
+        Back<i class="material-icons left">keyboard_arrow_left</i>
+      </button>
       <img
         :srcset="
           `
@@ -100,6 +108,7 @@
               v-for="tag in photo.tags"
               :key="tag.title"
               class="btn-small waves-effect waves-light indigo text-darken-4 mr-2 mb-2"
+              @click="() => onTagClick(tag.title)"
               >{{ tag.title }}
             </span>
           </div>
@@ -111,6 +120,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import router from '@/router'
 
 export default {
   name: 'Photo',
@@ -147,6 +157,20 @@ export default {
     },
 
     ...mapState(['status', 'photo']),
+  },
+
+  methods: {
+    onTagClick(tag) {
+      console.log(tag)
+      this.$store.commit('setQuery', tag)
+      this.$store.dispatch('fetchPhotos', {
+        replace: true,
+        query: tag,
+        heading: `Results for "${tag}"`,
+      })
+
+      router.push('/')
+    },
   },
 
   created() {
