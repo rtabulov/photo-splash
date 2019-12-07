@@ -60,6 +60,7 @@ input {
 }
 
 .photo__img {
+  display: block;
   width: 100%;
   transition: filter 0.3s;
 }

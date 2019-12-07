@@ -8,12 +8,16 @@
     </div>
     <!-- nothing found status -->
     <div v-else-if="status === 'notfound'" class="container py-24">
-      <h1>Nothing Found 😥</h1>
+      <h1>Nothing Found  <span role="img" aria-label="sad emoji">
+              😥
+            </span></h1>
     </div>
 
     <!-- error status -->
     <div v-else-if="status === 'error'" class="container py-24">
-      <h1>Something went wrong 🤔</h1>
+      <h1>Something went wrong  <span role="img" aria-label="confused emoji">
+              🤔
+            </span></h1>
     </div>
 
     <keep-alive v-else>
@@ -68,6 +72,7 @@ export default {
 
   created: function() {
     axios.defaults.headers.common.Authorization = `Client-ID ${process.env.VUE_APP_UNSPLASH_TOKEN}`
+    
     this.$store.dispatch('fetchPhotos', {
       replace: true,
       heading: 'Latest photos',

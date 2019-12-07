@@ -1,6 +1,6 @@
 <template>
   <div class="photo">
-    <router-link class="flex" :to="`/photos/${photo.id}`">
+    <router-link class="block" :to="`/photos/${photo.id}`">
       <img
         class="photo__img"
         :src="photo.urls.small"
