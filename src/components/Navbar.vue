@@ -47,8 +47,9 @@
 export default {
   name: 'Navbar',
   mounted() {
-    var elems = document.querySelectorAll('.sidenav')
-    var instances = window.M.Sidenav.init(elems, {})
+    // var elems = document.querySelectorAll('.sidenav')
+    // var instances = window.M.Sidenav.init(elems, {})
+    window.M.AutoInit()
   },
 }
 </script>

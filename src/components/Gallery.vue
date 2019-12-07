@@ -8,7 +8,6 @@
         :class="{ col1: index === 0, col2: index === 1, col3: index === 2 }"
       >
         <GalleryItem
-          class="gallery-item"
           v-for="photo in splitPhoto"
           :key="photo.id"
           :photo="photo"

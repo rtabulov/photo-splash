@@ -1,11 +1,7 @@
 <template>
   <div class="photo">
     <router-link class="block" :to="`/photos/${photo.id}`">
-      <img
-        class="photo__img"
-        :src="photo.urls.small"
-        :alt="'Photo by ' + fullName"
-      />
+      <img class="photo__img" :src="photo.urls.small" :alt="'By ' + fullName" />
     </router-link>
     <a
       :href="photo.user.links.html"
